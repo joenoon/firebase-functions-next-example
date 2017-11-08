@@ -1,11 +1,13 @@
 const functions = require("firebase-functions")
 const nextApp = require("next")
+const path = require('path')
 
-var dev = process.env.NODE_ENV !== "production"
-var app = nextApp({ dev, conf: { distDir: "next" } })
-var handle = app.getRequestHandler()
+const distDir = path.relative(process.cwd(), path.resolve(__dirname, ".next"));
+const app = nextApp({ dev: false, conf: { distDir } })
+const handle = app.getRequestHandler()
+
 
 exports.next = functions.https.onRequest((req, res) => {
   console.log("File: " + req.originalUrl) // log the page.js file that is being requested
-  return app.prepare().then(() => handle(req, res))
+  return handle(req, res);
 })

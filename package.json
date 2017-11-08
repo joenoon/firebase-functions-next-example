@@ -8,21 +8,21 @@
   "repository":
     "https://github.com/jthegedus/firebase-functions-next-example.git",
   "scripts": {
-    "prebuild": "rimraf \"dist/functions\"",
-    "build": "yarn build-functions && yarn build-app",
-    "postbuild": "cd \"dist/functions\" && yarn",
-    "build-app": "cd \"src/app\" && yarn build",
+    "prebuild": "rimraf dist/functions",
+    "build": "yarn run build-functions && yarn run build-app",
+    "postbuild": "cd dist/functions && yarn install",
+    "build-app": "(cd src/app && yarn run build) && mv src/app/.next dist/functions/",
     "build-functions":
-      "babel \"src/functions\" --out-dir \"dist/functions\" --copy-files --ignore \"node_modules\"",
-    "predeploy": "yarn build",
+      "babel src/functions --out-dir dist/functions --copy-files --ignore node_modules",
+    "predeploy": "yarn run build",
     "deploy": "firebase deploy",
     "format": "prettier --write \"**/**{.js, .json}\"",
-    "postinstall": "yarn install-app && yarn install-functions",
-    "install-app": "cd \"src/app\" && yarn",
-    "install-functions": "cd \"src/functions\" && yarn",
-    "next": "cd \"src/app\" && yarn dev",
-    "preserve": "yarn build",
-    "serve": "firebase serve"
+    "postinstall": "yarn run install-app && yarn run install-functions",
+    "install-app": "cd src/app && yarn install",
+    "install-functions": "cd src/functions && yarn",
+    "next": "cd src/app && yarn run dev",
+    "preserve": "yarn run build",
+    "serve": "firebase serve --only functions,hosting"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
